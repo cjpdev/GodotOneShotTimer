@@ -34,7 +34,13 @@ public class OneShotTimer : Godot.Object
 
     public OneShotTimer(Godot.Node node, float sec, string method)
     {
-        if(node != null && method != "")
+        if(method == "")
+        {
+            GD.Print("OneShotTimer: Error no method name ");
+            return;
+        }
+
+        if(node != null)
         {
             this.target = (Godot.Object)node;
 
@@ -55,13 +61,17 @@ public class OneShotTimer : Godot.Object
                     node.AddChild(t);
                     t.Start();
                 }
-    
+                
+                return;
+            
+            } else {
+
+                GD.Print("OneShotTimer: Error target has no method named " + method);
                 return;
             }
         }
 
-        string err = (method=="")?"no method name":method;
-        GD.Print("target, does not have method " + err);
+        GD.Print("OneShotTimer: was not created.");
     }
 
     public void Done()
