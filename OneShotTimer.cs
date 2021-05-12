@@ -28,12 +28,16 @@ public class OneShotTimer : Godot.Object
     private string method = null;
     private Node node = null;
 
+    private bool callDeferred = false;
+
     private OneShotTimer()
     {  
     }
 
-    public OneShotTimer(Godot.Node node, float sec, string method)
+    public OneShotTimer(Godot.Node node, float sec, string method, bool callDeferred = true)
     {
+        this.callDeferred = callDeferred;
+
         if(method == "")
         {
             GD.Print("OneShotTimer: Error no method name ");
@@ -94,7 +98,13 @@ public class OneShotTimer : Godot.Object
             // Call the real function
             if(target.HasMethod(method))
             {
-                target.CallDeferred(method);
+                // Useful to be able choose the call type.
+                if(callDeferred)
+                {
+                    target.CallDeferred(method);
+                } else {
+                    target.Call(method);
+                }
             }
         }
 
