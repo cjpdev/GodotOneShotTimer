@@ -30,7 +30,7 @@ public class OneShotTimer : Godot.Object
 
     private bool callDeferred = false;
 
-    private Godot.Collections.Array binds = null;
+    private object[] binds = null;
 
     private OneShotTimer()
     {  
@@ -70,7 +70,7 @@ public class OneShotTimer : Godot.Object
     /// <param name="method">Target to call on the node object.</param>
     /// <param name="binds">Params to pass when calling the targer method.</param> 
     /// <param name="callDeferred">Use deferred call, Default = true</param>
-    public OneShotTimer(Godot.Node node, float sec, string method, Godot.Collections.Array binds, bool callDeferred = true)
+    public OneShotTimer(Godot.Node node, float sec, string method, object[] binds, bool callDeferred = true)
     {
         this.binds = binds;
   

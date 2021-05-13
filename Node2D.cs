@@ -8,7 +8,7 @@ public class Node2D : Godot.Node2D
         OneShotTimer one1 = new OneShotTimer(this, 2f, nameof(TestFunc));
         OneShotTimer one2 = new OneShotTimer(this, 4f, nameof(TestFunc), false);
         OneShotTimer one3 = new OneShotTimer(this, 6f, nameof(TestFunc));
-        OneShotTimer oneA1 = new OneShotTimer(this, 2f, nameof(TestFunc2), new Godot.Collections.Array() { "Hello world.."});
+        OneShotTimer oneA1 = new OneShotTimer(this, 2f, nameof(TestFunc2), new object[] { "Hello world.."});
     }
 
     public void TestFunc()
