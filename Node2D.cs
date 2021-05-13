@@ -5,20 +5,20 @@ public class Node2D : Godot.Node2D
 {
     public override void _Ready()
     {
-        OneShotTimer one1 = new OneShotTimer(this, 2, nameof(TestFunc));
-        OneShotTimer one2 = new OneShotTimer(this, 4, nameof(TestFunc));
-        OneShotTimer one3 = new OneShotTimer(this, 6, nameof(TestFunc), false);
-        OneShotTimer oneA1 = new OneShotTimer(this, 2, nameof(TestFunc2));
+        OneShotTimer one1 = new OneShotTimer(this, 2f, nameof(TestFunc));
+        OneShotTimer one2 = new OneShotTimer(this, 4f, nameof(TestFunc), false);
+        OneShotTimer one3 = new OneShotTimer(this, 6f, nameof(TestFunc));
+        OneShotTimer oneA1 = new OneShotTimer(this, 2f, nameof(TestFunc2), new Godot.Collections.Array() { "Hello world.."});
     }
 
     public void TestFunc()
     {
-        GD.Print("OneShot Timer fired....");
+        GD.Print("TestFunc: OneShot Timer fired....");
     }
 
-    public void TestFunc2()
+    public void TestFunc2(string msg)
     {
-        GD.Print("OneShot Timer fired....");
+        GD.Print("TestFunc2: OneShot Timer  fired...." + msg);
     }
 
 }

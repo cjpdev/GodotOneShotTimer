@@ -30,11 +30,54 @@ public class OneShotTimer : Godot.Object
 
     private bool callDeferred = false;
 
+    private Godot.Collections.Array binds = null;
+
     private OneShotTimer()
     {  
     }
 
+    /// <summary>
+    /// Create instance of a one shot timer, once the time has fired it is removed
+    /// from the Node tree.
+	/// </summary>
+	/// <param name="node">Godot.Node</param>
+    /// <param name="sec">Wait time in Seconds.</param>
+    /// <param name="method">Target to call on the node object.</param>
+    /// <param name="callDeferred">Use deferred call, Default = true</param>
     public OneShotTimer(Godot.Node node, float sec, string method, bool callDeferred = true)
+    {
+        CreateOneShotTimer( node,  sec, method,callDeferred);
+    }
+
+	/// <summary>
+    /// Create instance of a one shot timer, once the time has fired it is removed
+    /// from the Node tree.
+    /// <example>
+    /// See example code
+    /// <code>
+    ///  OneShotTimer oneA1 = new OneShotTimer(this, 2f, nameof(ExFunc),
+    ///         new Godot.Collections.Array() { "Hello world.."});
+    ///
+    ///  public void ExFunc(string msg)
+    ///  {
+    ///    GD.Print("ExFunc: OneShot Timer fired...." + msg);
+    ///  }
+    /// </code>
+    /// </example>
+	/// </summary>
+	/// <param name="node">Godot.Node</param>
+    /// <param name="sec">Wait time in Seconds.</param>
+    /// <param name="method">Target to call on the node object.</param>
+    /// <param name="binds">Params to pass when calling the targer method.</param> 
+    /// <param name="callDeferred">Use deferred call, Default = true</param>
+    public OneShotTimer(Godot.Node node, float sec, string method, Godot.Collections.Array binds, bool callDeferred = true)
+    {
+        this.binds = binds;
+  
+        CreateOneShotTimer(node, sec, method,callDeferred);
+    }
+
+    private void CreateOneShotTimer(Godot.Node node, float sec, string method, bool callDeferred = true)
     {
         this.callDeferred = callDeferred;
 
@@ -98,12 +141,26 @@ public class OneShotTimer : Godot.Object
             // Call the real function
             if(target.HasMethod(method))
             {
-                // Useful to be able choose the call type.
-                if(callDeferred)
+                // If we have params use them in the call.
+                if(binds != null)
                 {
-                    target.CallDeferred(method);
+                    // Useful to be able choose the call type.
+                    if(callDeferred)
+                    {
+                        target.CallDeferred(method, binds);
+                    } else {
+                        target.Call(method, binds);
+                    }
+
                 } else {
-                    target.Call(method);
+
+                    // Useful to be able choose the call type.
+                    if(callDeferred)
+                    {
+                        target.CallDeferred(method);
+                    } else {
+                        target.Call(method);
+                    }
                 }
             }
         }
