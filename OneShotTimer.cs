@@ -27,9 +27,7 @@ public class OneShotTimer : Godot.Object
     private Godot.Object target = null;
     private string method = null;
     private Node node = null;
-
     private bool callDeferred = false;
-
     private object[] binds = null;
 
     private OneShotTimer()
@@ -55,8 +53,7 @@ public class OneShotTimer : Godot.Object
     /// <example>
     /// See example code
     /// <code>
-    ///  OneShotTimer oneA1 = new OneShotTimer(this, 2f, nameof(ExFunc),
-    ///         new Godot.Collections.Array() { "Hello world.."});
+    ///  OneShotTimer oneA1 = new OneShotTimer(this, 2f, nameof(ExFunc), false, "Hello world..");
     ///
     ///  public void ExFunc(string msg)
     ///  {
@@ -70,7 +67,7 @@ public class OneShotTimer : Godot.Object
     /// <param name="method">Target to call on the node object.</param>
     /// <param name="binds">Params to pass when calling the targer method.</param> 
     /// <param name="callDeferred">Use deferred call, Default = true</param>
-    public OneShotTimer(Godot.Node node, float sec, string method, object[] binds, bool callDeferred = true)
+    public OneShotTimer(Godot.Node node, float sec, string method, bool callDeferred = true, params object[] binds)
     {
         this.binds = binds;
   
@@ -81,10 +78,9 @@ public class OneShotTimer : Godot.Object
     {
         this.callDeferred = callDeferred;
 
-        if(method == "")
+        if(method == null || method == "")
         {
-            GD.Print("OneShotTimer: Error no method name ");
-            return;
+            throw new Exception("OneShotTimer: Error no method name ");
         }
 
         if(node != null)
@@ -112,13 +108,10 @@ public class OneShotTimer : Godot.Object
                 return;
             
             } else {
-
-                GD.Print("OneShotTimer: Error target has no method named " + method);
-                return;
+                throw new Exception("OneShotTimer: Error target has no method named " + method);
             }
         }
-
-        GD.Print("OneShotTimer: was not created.");
+        throw new Exception("OneShotTimer: was not created.");
     }
 
     public void Done()
@@ -176,5 +169,6 @@ public class OneShotTimer : Godot.Object
         this.node = null;
         this.target = null;
         this.method = null;
+        this.binds = null;
     }
 }
